@@ -1,0 +1,50 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PORT: "3000"
+      CODEX_HOME: /home/node/.codex
+      CODEX_WORKDIR: /app/.codex-workdir
+      OISHINBOT_LOG_PATH: /app/logs/oishinbot-events.jsonl
+      OISHINBOT_CODEX_CONFIG: /app/oishinbot.codex.config.json
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - codex-home:/home/node/.codex
+      - codex-workdir:/app/.codex-workdir
+      - logs:/app/logs
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/healthz').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  ngrok:
+    image: ngrok/ngrok:3.39.2-debian
+    restart: unless-stopped
+    env_file:
+      - .env
+    command: ["http", "app:3000"]
+    depends_on:
+      app:
+        condition: service_healthy
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  codex-home:
+  codex-workdir:
+  logs:

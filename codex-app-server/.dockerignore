@@ -1,0 +1,10 @@
+.git
+node_modules
+npm-debug.log
+.env
+data
+logs
+*.jsonl
+.codex-workdir
+coverage
+.DS_Store
