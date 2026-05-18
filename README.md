@@ -6,8 +6,24 @@
 - AI(Claude.app)を利用して、LINE で料理名を送るとレシピを返してくれる bot を作ります
 - その名も、「美味しんぼット」
 
+## 開発者向け: Codex App Server 版
+
+通常のワークショップは下の「はじめに」から進めてください。
+この節は、Claude API を使わない別実装を試したい開発者向けです。
+
+このリポジトリには、OpenAI Codex App Server で動かす実装も含まれています。
+
+- 実装: [`codex-app-server/`](./codex-app-server/)
+- LINE のトークルームごとに会話を分離
+- Codex App Server は `stdio` の子プロセスとして起動
+- Docker Compose でアプリと公開トンネルを分離
+- API キーや認証ファイルは Git に含めない構成
+
+詳しくは [`codex-app-server/README.md`](./codex-app-server/README.md) を参照してください。
+
 ## 目次
 
+- [開発者向け: Codex App Server 版](#開発者向け-codex-app-server-版)
 - [はじめに](#はじめに)
 - [今日作るもの](#今日作るもの)
 - [Part 1: 環境準備](#part-1-環境準備)

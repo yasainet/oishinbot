@@ -1,0 +1,10 @@
+{
+  "model_reasoning_effort": "low",
+  "sandbox_mode": "read-only",
+  "web_search": "disabled",
+  "features.multi_agent": false,
+  "features.apps": false,
+  "features.plugins": false,
+  "features.tool_search": false,
+  "features.tool_suggest": false
+}
