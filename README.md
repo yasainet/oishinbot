@@ -79,20 +79,31 @@ sequenceDiagram
 
 ### 全体像
 
-今日作るシステムの登場人物は以下のとおりです。
+今日作るシステムの登場人物は 4 人(4 つ)です。
+あなた → LINE → あなたの PC の Node.js → Claude API、
+の順番でメッセージが流れて、また逆順に返ってきます。
 
 ```mermaid
-flowchart LR
-    A[あなたの LINE] --> B[LINE サーバー]
-    B --> C[あなたの PC で動く Node.js]
-    C --> D[Claude AI<br/>Anthropic]
+sequenceDiagram
+    actor User as あなた
+    participant LINE as LINE サーバー
+    participant Node as Node.js<br/>(Mac / Windows / サーバー)
+    participant Claude as Claude API<br/>(Anthropic)
+
+    User->>LINE: 1. 「カレー」と送信
+    LINE->>Node: 2. Webhook で「メッセージ届いたよ」と通知
+    Node->>Claude: 3. 「カレーのレシピ教えて」と問い合わせ
+    Claude-->>Node: 4. レシピのテキストを返答
+    Node-->>LINE: 5. 返信メッセージを送信(Messaging API)
+    LINE-->>User: 6. LINE トーク画面にレシピを表示
 ```
 
 1. あなたが LINE で「カレー」と送信
-2. LINE のサーバーが、あなたの PC に「メッセージが届いたよ」と知らせる
-3. あなたの PC で動いている Node.js が、Claude AI に「カレーのレシピ教えて」と聞く
-4. Claude AI が答える
-5. その答えを Node.js が LINE 経由であなたに送り返す
+2. LINE のサーバーが、あなたの PC に「メッセージが届いたよ」と知らせる(Webhook)
+3. あなたの PC で動いている Node.js が、Claude API に「カレーのレシピ教えて」と聞く
+4. Claude API が答えを返す
+5. その答えを Node.js が LINE のサーバー経由であなたに送り返す
+6. あなたの LINE にレシピが届く
 
 > [!NOTE]
 > 今日コードを書くのは **Claude.app(デスクトップアプリ)** ですが、
